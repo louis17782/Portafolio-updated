@@ -3,6 +3,7 @@ import BaseLayout from "../layouts/BaseLayout.astro";
 import Navbar from "../components/Navbar.astro";
 import Footer from "../components/Footer.astro";
 import HeroVisual from "../components/HeroVisual";
+import MarketingTechSection from "../components/MarketingTechSection";
 import Projects from "../components/Projects";
 import DemoShowcase from "../components/DemoShowcase";
 import Testimonials from "../components/Testimonials";
@@ -45,6 +46,8 @@ import ContactForm from "../components/ContactForm";
       </div>
     </section>
 
+    <MarketingTechSection />
+
     <section id="proyectos" class="section-wrap py-24 sm:py-32">
       <div class="flex flex-col justify-between gap-4 sm:flex-row sm:items-end">
         <div><p class="section-kicker">Trabajo seleccionado · 2022—2026</p><h2 class="section-title">Proyectos que generan<br class="hidden sm:block" /> resultados.</h2></div>
@@ -83,7 +86,7 @@ import ContactForm from "../components/ContactForm";
 
     <section id="reviews" class="border-y border-white/[0.06] bg-white/[0.015] py-24 sm:py-32">
       <div class="section-wrap">
-        <p class="section-kicker">Palabras de quienes ya trabajaron conmigo.</p>
+        <p class="section-kicker">Palabras de quienes ya trabajaron conmigo</p>
         <h2 class="section-title">La confianza también<br class="hidden sm:block" /> se construye.</h2>
         <Testimonials client:visible />
       </div>
