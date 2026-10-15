@@ -161,7 +161,7 @@ export default function Projects() {
   }
 
   return (
-    <div className="relative mt-12">
+    <div className="relative mt-12 md:px-12">
       <div
         ref={carousel}
         aria-label="Proyectos del portafolio"
@@ -202,12 +202,32 @@ export default function Projects() {
           );
         })}
       </div>
+      <div className="mt-5 flex justify-end gap-3 md:hidden">
+        <button
+          type="button"
+          onClick={() => scrollProjects(-1)}
+          disabled={!canScrollBack}
+          aria-label="Ver proyectos anteriores"
+          className="grid size-11 place-items-center rounded-full border border-white/15 bg-ink text-white shadow-lg transition-colors hover:border-lime hover:text-lime disabled:pointer-events-none disabled:opacity-40"
+        >
+          <ArrowLeft size={18} />
+        </button>
+        <button
+          type="button"
+          onClick={() => scrollProjects(1)}
+          disabled={!canScrollForward}
+          aria-label="Ver siguientes proyectos"
+          className="grid size-11 place-items-center rounded-full border border-white/15 bg-ink text-white shadow-lg transition-colors hover:border-lime hover:text-lime disabled:pointer-events-none disabled:opacity-40"
+        >
+          <ArrowRight size={18} />
+        </button>
+      </div>
       <button
         type="button"
         onClick={() => scrollProjects(-1)}
         disabled={!canScrollBack}
         aria-label="Ver proyectos anteriores"
-        className="absolute left-2 top-1/2 z-10 grid size-11 -translate-y-1/2 place-items-center rounded-full border border-white/15 bg-ink/90 text-white shadow-lg backdrop-blur transition-colors hover:border-lime hover:text-lime disabled:pointer-events-none disabled:opacity-0 sm:-left-5"
+        className="absolute left-0 top-1/2 z-10 hidden size-11 -translate-y-1/2 place-items-center rounded-full border border-white/15 bg-ink/90 text-white shadow-lg backdrop-blur transition-colors hover:border-lime hover:text-lime disabled:pointer-events-none disabled:opacity-0 md:grid"
       >
         <ArrowLeft size={18} />
       </button>
@@ -216,7 +236,7 @@ export default function Projects() {
         onClick={() => scrollProjects(1)}
         disabled={!canScrollForward}
         aria-label="Ver siguientes proyectos"
-        className="absolute right-2 top-1/2 z-10 grid size-11 -translate-y-1/2 place-items-center rounded-full border border-white/15 bg-ink/90 text-white shadow-lg backdrop-blur transition-colors hover:border-lime hover:text-lime disabled:pointer-events-none disabled:opacity-0 sm:-right-5"
+        className="absolute right-0 top-1/2 z-10 hidden size-11 -translate-y-1/2 place-items-center rounded-full border border-white/15 bg-ink/90 text-white shadow-lg backdrop-blur transition-colors hover:border-lime hover:text-lime disabled:pointer-events-none disabled:opacity-0 md:grid"
       >
         <ArrowRight size={18} />
       </button>
