@@ -3,9 +3,9 @@ import { AnimatePresence, motion } from "motion/react";
 import { ArrowLeft, ArrowRight, Star } from "lucide-react";
 
 const testimonials = [
-  { quote: "Louis entendió el reto desde el primer día. El nuevo sitio no solo se ve increíble: ahora convierte visitas en clientes.", name: "María López", role: "Fundadora · Nómada Studio", initials: "ML", color: "bg-lilac" },
-  { quote: "Un colaborador brillante, con criterio técnico y una sensibilidad de diseño poco común. El proceso fue impecable.", name: "Diego Fernández", role: "Product Lead · Altura", initials: "DF", color: "bg-lime" },
-  { quote: "Pasamos de depender de plataformas de terceros a tener una experiencia propia que nuestros clientes aman.", name: "Sofía Martínez", role: "Directora · Casa Oliva", initials: "SM", color: "bg-orange-200" },
+  { quote: "Louis entendió el reto desde el primer día. El nuevo sitio no solo se ve increíble: ahora convierte visitas en clientes.", name: "Francisco Cestari", role: "Inprocica international llc - CEO", initials: "ML", color: "bg-lilac" },
+  { quote: "Un colaborador brillante, con criterio técnico y una sensibilidad de diseño poco común. El proceso fue impecable y aun seguimos trabajando juntos.", name: "Jose Miguel", role: "La 95 truckign show - CEO", initials: "DF", color: "bg-lime" },
+  { quote: "Excelente trabajo, muy profesional, hubo una comunicación efectiva. Muchas gracias.", name: "Enrique", role: "Productor de musica", initials: "SM", color: "bg-orange-200" },
 ];
 
 export default function Testimonials() {
