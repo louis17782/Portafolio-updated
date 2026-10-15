@@ -1,4 +1,5 @@
-import { useState } from "react";
+import { useRef, useState } from "react";
+import type { PointerEvent as ReactPointerEvent } from "react";
 import { AnimatePresence, motion } from "motion/react";
 import { ArrowLeft, ArrowRight, Star } from "lucide-react";
 
@@ -10,8 +11,27 @@ const testimonials = [
 
 export default function Testimonials() {
   const [index, setIndex] = useState(0);
+  const swipeStart = useRef<{ x: number; y: number } | null>(null);
   const current = testimonials[index];
   const change = (direction: number) => setIndex((value) => (value + direction + testimonials.length) % testimonials.length);
+
+  const handlePointerDown = (event: ReactPointerEvent<HTMLDivElement>) => {
+    if (event.pointerType === "touch" || event.pointerType === "pen") {
+      swipeStart.current = { x: event.clientX, y: event.clientY };
+    }
+  };
+
+  const handlePointerUp = (event: ReactPointerEvent<HTMLDivElement>) => {
+    const start = swipeStart.current;
+    swipeStart.current = null;
+    if (!start) return;
+
+    const deltaX = event.clientX - start.x;
+    const deltaY = event.clientY - start.y;
+    if (Math.abs(deltaX) > 48 && Math.abs(deltaX) > Math.abs(deltaY)) {
+      change(deltaX < 0 ? 1 : -1);
+    }
+  };
 
   return (
     <div className="mt-12 grid gap-8 md:grid-cols-[.7fr_1.3fr] md:items-center">
@@ -24,7 +44,15 @@ export default function Testimonials() {
           <button onClick={() => change(1)} aria-label="Siguiente testimonio" className="grid size-10 place-items-center rounded-full border border-white/10 transition-colors hover:border-lime hover:text-lime"><ArrowRight size={16} /></button>
         </div>
       </div>
-      <div className="glass-card relative min-h-[245px] overflow-hidden rounded-3xl p-7 sm:p-9" aria-live="polite">
+      <div
+        className="glass-card relative min-h-[245px] touch-pan-y overflow-hidden rounded-3xl p-7 sm:p-9"
+        aria-live="polite"
+        onPointerDown={handlePointerDown}
+        onPointerUp={handlePointerUp}
+        onPointerCancel={() => {
+          swipeStart.current = null;
+        }}
+      >
         <AnimatePresence mode="wait">
           <motion.figure key={index} initial={{ opacity: 0, x: 18 }} animate={{ opacity: 1, x: 0 }} exit={{ opacity: 0, x: -18 }} transition={{ duration: 0.25 }}>
             <div className="flex gap-1 text-lime">{Array.from({ length: 5 }, (_, i) => <Star key={i} size={14} fill="currentColor" />)}</div>
