@@ -1,3 +1,5 @@
+import { useEffect, useRef, useState } from "react";
+import type { PointerEvent as ReactPointerEvent } from "react";
 import { SearchCheck, Target, TrendingUp } from "lucide-react";
 import type { LucideIcon } from "lucide-react";
 
@@ -36,12 +38,67 @@ const tools: MarketingTool[] = [
   },
 ];
 
+function handleCardPointerMove(event: ReactPointerEvent<HTMLElement>) {
+  if (
+    (event.pointerType !== "mouse" && event.pointerType !== "pen") ||
+    window.matchMedia("(prefers-reduced-motion: reduce)").matches
+  ) {
+    return;
+  }
+
+  const bounds = event.currentTarget.getBoundingClientRect();
+  const pointerX = ((event.clientX - bounds.left) / bounds.width) * 2 - 1;
+  const pointerY = ((event.clientY - bounds.top) / bounds.height) * 2 - 1;
+
+  event.currentTarget.style.transform =
+    `rotateX(${(-pointerY * 6).toFixed(2)}deg) ` +
+    `rotateY(${(pointerX * 6).toFixed(2)}deg) translateZ(6px)`;
+}
+
+function resetCardTilt(event: ReactPointerEvent<HTMLElement>) {
+  event.currentTarget.style.transform = "";
+}
+
 export default function MarketingTechSection() {
+  const sectionRef = useRef<HTMLElement>(null);
+  const [isVisible, setIsVisible] = useState(false);
+
+  useEffect(() => {
+    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+      setIsVisible(true);
+      return;
+    }
+
+    const section = sectionRef.current;
+    if (!section) return;
+
+    if (!("IntersectionObserver" in window)) {
+      setIsVisible(true);
+      return;
+    }
+
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          setIsVisible(true);
+          observer.unobserve(entry.target);
+        }
+      },
+      { threshold: 0.12 },
+    );
+
+    observer.observe(section);
+    return () => observer.disconnect();
+  }, []);
+
   return (
     <section
+      ref={sectionRef}
       id="posicionamiento"
       aria-labelledby="marketing-tech-title"
-      className="border-y border-white/[0.06] bg-white/[0.015] py-24 sm:py-32"
+      className={`border-y border-white/[0.06] bg-white/[0.015] py-24 transition-[opacity,transform] duration-700 ease-out sm:py-32 ${
+        isVisible ? "translate-y-0 opacity-100" : "translate-y-8 opacity-0"
+      }`}
     >
       <div className="section-wrap">
         <div className="max-w-3xl">
@@ -56,14 +113,16 @@ export default function MarketingTechSection() {
           </p>
         </div>
 
-        <div className="mt-12 grid gap-5 md:grid-cols-3">
+        <div className="mt-12 grid gap-5 [perspective:1200px] md:grid-cols-3">
           {tools.map((tool) => {
             const Icon = tool.icon;
 
             return (
               <article
                 key={tool.title}
-                className="glass-card group flex h-full flex-col rounded-2xl p-6 transition-all duration-300 hover:border-lime-400/50 sm:p-7"
+                onPointerMove={handleCardPointerMove}
+                onPointerLeave={resetCardTilt}
+                className="glass-card group flex h-full flex-col rounded-2xl p-6 [transform-style:preserve-3d] transition-all duration-300 ease-out hover:border-lime-400/50 sm:p-7"
               >
                 <div className="flex size-12 items-center justify-center rounded-xl border border-lime/20 bg-lime/[0.08] text-lime">
                   <Icon size={23} strokeWidth={1.8} aria-hidden="true" />
